@@ -1,11 +1,16 @@
 const express = require("express");
-const { Role } = require("./models/shared/user");
 require("./database/mongoose");
-require("./models/shared/user");
-const Student = require("./models/manger");
-const { specialization } = require("./models/teacher");
+const course = require("./models/Courses/course");
+const { Specialization } = require("./models/users/teacher");
 
 const app = express();
+
+const cs50 = new course({
+  name: "Cs50",
+  specialization: Specialization.cs,
+  numberOfAllowedStudent: 100,
+});
+cs50.save();
 
 app.use(express.json);
 const port = 3000;

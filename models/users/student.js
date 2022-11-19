@@ -6,6 +6,12 @@ const studentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  Courses: [
+    {
+      id: { type: mongoose.Schema.Types.ObjectId, required: true },
+      degree: Number,
+    },
+  ],
 });
 
 const Student = User.discriminator("Student", studentSchema);

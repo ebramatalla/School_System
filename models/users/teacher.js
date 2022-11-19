@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const User = require("./shared/user");
 
 const specializationEnum = {
-  arabic: "arabic",
-  english: "english",
-  math: "math",
+  cs: "cs",
+  is: "is",
+  it: "it",
 };
 
 const teacherSchema = new mongoose.Schema({
@@ -12,8 +12,14 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     enum: specializationEnum,
   },
+  myStudent: [
+    {
+      studentId: mongoose.Schema.Types.ObjectId,
+      studentName: String,
+    },
+  ],
 });
 const Teacher = User.discriminator("Teacher", teacherSchema);
 
 module.exports = mongoose.model("Teacher");
-module.exports.specialization = specializationEnum;
+module.exports.Specialization = specializationEnum;
