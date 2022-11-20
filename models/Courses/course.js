@@ -9,13 +9,19 @@ const courseSchema = new mongoose.Schema({
   specialization: {
     type: String,
     enum: specialization,
+    required: true,
   },
   numberOfAllowedStudent: {
     type: Number,
     required: true,
   },
-  Teacher: {
+  availableFor: {
+    type: Number,
+    required: true,
+  },
+  teacher: {
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
   },
 });
 const Courses = mongoose.model("Courses", courseSchema);

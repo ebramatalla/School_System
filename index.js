@@ -1,18 +1,11 @@
 const express = require("express");
 require("./database/mongoose");
-const course = require("./models/Courses/course");
-const { Specialization } = require("./models/users/teacher");
+const teacher = require("../src/models/users/teacher");
+const mangerRoute = require("../src/route/manger");
 
 const app = express();
-
-const cs50 = new course({
-  name: "Cs50",
-  specialization: Specialization.cs,
-  numberOfAllowedStudent: 100,
-});
-cs50.save();
-
-app.use(express.json);
+app.use(express.json());
+app.use(mangerRoute);
 const port = 3000;
 
 app.listen(port, () => {
