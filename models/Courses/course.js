@@ -23,6 +23,12 @@ const courseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  homeworkOfCourse: [
+    {
+      homework: { type: String },
+      time: { type: Number, default: new Date().getTime() },
+    },
+  ],
 });
 const Courses = mongoose.model("Courses", courseSchema);
 module.exports = Courses;

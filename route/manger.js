@@ -3,10 +3,15 @@ const mangerRoute = require("../controller/manger");
 const route = express.Router();
 const { body } = require("express-validator");
 const Teacher = require("../models/users/teacher");
+const isAuth = require("../middleware/isAuth");
+const isRole = require("../middleware/isRole");
+const { Role } = require("../models/users/shared/user");
 
 // route to add course
 route.post(
   "/addCourse",
+  isAuth,
+  isRole([Role.manager]),
   body("name")
     .isString()
     .withMessage("Name Of Course Is Required and must be String"),
@@ -32,6 +37,8 @@ route.post(
 );
 route.post(
   "/addTeacher",
+  isAuth,
+  isRole([Role.manager]),
   body("name").isString().withMessage("Name Is Required And Must Be String "),
   body("email").isEmail().withMessage("Email Is Required And Must Be Valid "),
   body("password")
@@ -50,6 +57,8 @@ route.post(
 );
 route.post(
   "/addStudent",
+  isAuth,
+  isRole([Role.manager]),
   body("name").isString().withMessage("Name Is Required And Must Be String "),
   body("email").isEmail().withMessage("Email Is Required And Must Be Valid "),
   body("password")

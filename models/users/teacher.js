@@ -14,8 +14,7 @@ const teacherSchema = new mongoose.Schema({
   },
   myStudent: [
     {
-      studentId: mongoose.Schema.Types.ObjectId,
-      studentName: String,
+      type: mongoose.Schema.Types.ObjectId,
     },
   ],
 });

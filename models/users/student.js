@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 const User = require("./shared/user");
 
 const studentSchema = new mongoose.Schema({
-  active: {
-    type: Boolean,
-    default: false,
-  },
   level: {
     type: Number,
     required: true,
