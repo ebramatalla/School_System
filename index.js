@@ -7,6 +7,7 @@ const authRoute = require("../src/route/auth");
 const app = express();
 
 app.use(express.json());
+
 app.use(mangerRoute);
 app.use(teacherRoute);
 app.use(studentRoute);

@@ -62,6 +62,16 @@ const userSchema = new mongoose.Schema(
 // that to sure email is unique
 userSchema.plugin(uniqueValidator);
 
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.confirmationCode;
+  delete userObject.password;
+  delete userObject.tokens;
+  return userObject;
+};
+
 // gen auth
 userSchema.methods.generateAuthToken = async function () {
   const user = this;

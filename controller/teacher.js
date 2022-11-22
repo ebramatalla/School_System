@@ -12,6 +12,11 @@ const addHomeWork = async (req, res) => {
     const allStudent = await Student.find({
       currentCourses: { $in: [course._id] },
     });
+
+    // Check if this teacher teach this course
+    if (req.user._id.toString() !== course.teacher.toString()) {
+      throw new Error("you don't teach this course");
+    }
     const currentTime = new Date().toISOString();
     const myDate = new Date(currentTime);
     myDate.setDate(myDate.getDate() + parseInt(req.body.time));
@@ -26,7 +31,16 @@ const addHomeWork = async (req, res) => {
     res.status(200).send({ message: "Added" });
   } catch (error) {
     console.log(error);
+    res.status(400).send({ error });
   }
 };
+const studentInCourse = async (req, res) => {
+  try {
+    const allStudent = await Student.find({
+      currentCourses: { $in: [req.params.id] },
+    });
+    res.status(200).send(allStudent);
+  } catch (error) {}
+};
 
-module.exports = { addHomeWork };
+module.exports = { addHomeWork, studentInCourse };

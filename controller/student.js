@@ -11,20 +11,16 @@ const enrollCourse = async (req, res) => {
     if (course.availableFor == 0) {
       throw new Error("Course has reach max Student");
     }
-    console.log("hh");
     const student = req.user;
     if (!student) {
       throw new Error("Student is invalid");
     }
-    console.log(student);
 
     const enrolled = student.currentCourses.find(
       (element) => element.toString() === req.params.id
     );
-    console.log("hh");
 
     if (enrolled) {
-      console.log("hh");
       throw new Error("current enrolled");
     }
     course.numberOfAllowedStudent = course.numberOfAllowedStudent - 1;

@@ -14,5 +14,11 @@ route.post(
 );
 
 // see all student enrolled in my course
+route.get(
+  "/studentInCourse/:id",
+  isAuth,
+  isRole([Role.teacher]),
+  teacherRoute.studentInCourse
+);
 
 module.exports = route;
