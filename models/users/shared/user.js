@@ -56,6 +56,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    confirmationCode: {
+      type: Number,
+    },
   },
   baseOptions
 );

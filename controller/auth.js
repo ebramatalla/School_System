@@ -1,4 +1,5 @@
 const User = require("../models/users/shared/user");
+const mail = require("../mails/mail");
 const login = async (req, res) => {
   try {
     const user = await User.findToLogin(req.body.email, req.body.password);
@@ -11,4 +12,37 @@ const login = async (req, res) => {
     res.status(400).send(e);
   }
 };
-module.exports = { login };
+const confirm = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (user.active) {
+      throw new Error({ message: "User Already active" });
+    }
+    if (!user) {
+      throw new Error({ message: "email is invalid" });
+    }
+    const key = mail.random();
+    user.confirmationCode = key;
+    mail.sendEmail(user.email, key);
+    const token = await user.generateAuthToken();
+
+    await user.save();
+    res.status(200).send({ message: "email send to " + user.email, token });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const activeUser = async (req, res) => {
+  try {
+    if (req.user.confirmationCode === req.body.code) {
+      req.user.active = true;
+    } else {
+      throw new Error("Invalid Code");
+    }
+    await req.user.save();
+    res.status(200).send({ message: "active" });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+module.exports = { login, activeUser, confirm };
