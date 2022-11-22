@@ -11,15 +11,20 @@ const enrollCourse = async (req, res) => {
     if (course.availableFor == 0) {
       throw new Error("Course has reach max Student");
     }
-    const student = await Student.findById(req.body.id);
+    console.log("hh");
+    const student = req.user;
     if (!student) {
       throw new Error("Student is invalid");
     }
+    console.log(student);
 
     const enrolled = student.currentCourses.find(
       (element) => element.toString() === req.params.id
     );
+    console.log("hh");
+
     if (enrolled) {
+      console.log("hh");
       throw new Error("current enrolled");
     }
     course.numberOfAllowedStudent = course.numberOfAllowedStudent - 1;
@@ -31,4 +36,9 @@ const enrollCourse = async (req, res) => {
     res.status(400).send(error);
   }
 };
-module.exports = { enrollCourse };
+const getAllHomework = async (req, res) => {
+  try {
+    res.status(200).send(req.user.myHomework);
+  } catch (error) {}
+};
+module.exports = { enrollCourse, getAllHomework };

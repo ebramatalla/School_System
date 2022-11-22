@@ -8,6 +8,8 @@ const isRole = require("../middleware/isRole");
 const { Role } = require("../models/users/shared/user");
 
 // route to add course
+// add manger
+
 route.post(
   "/addCourse",
   isAuth,

@@ -19,6 +19,13 @@ const studentSchema = new mongoose.Schema({
       degree: Number,
     },
   ],
+  myHomework: [
+    {
+      name: String,
+      homework: { type: String },
+      time: { type: Date, default: new Date().toISOString() },
+    },
+  ],
 });
 
 const Student = User.discriminator("Student", studentSchema);

@@ -4,8 +4,8 @@ const mangerRoute = require("../src/route/manger");
 const teacherRoute = require("../src/route/teacher");
 const studentRoute = require("../src/route/student");
 const authRoute = require("../src/route/auth");
-
 const app = express();
+
 app.use(express.json());
 app.use(mangerRoute);
 app.use(teacherRoute);

@@ -42,6 +42,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: Role,
+      required: true,
     },
     tokens: [
       {

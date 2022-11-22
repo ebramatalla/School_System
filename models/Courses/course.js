@@ -26,7 +26,7 @@ const courseSchema = new mongoose.Schema({
   homeworkOfCourse: [
     {
       homework: { type: String },
-      time: { type: Number, default: new Date().getTime() },
+      time: { type: Date, default: new Date().toISOString() },
     },
   ],
 });
