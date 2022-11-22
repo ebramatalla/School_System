@@ -17,7 +17,7 @@ const enrollCourse = async (req, res) => {
     }
 
     const enrolled = student.currentCourses.find(
-      (element) => element.toString() === req.params.id
+      (element) => element._id.toString() === req.params.id
     );
 
     if (enrolled) {

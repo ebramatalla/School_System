@@ -21,4 +21,8 @@ route.get(
   teacherRoute.studentInCourse
 );
 
+route.post("/addScore/:id", teacherRoute.addPracticalScore);
+
+route.post("/addFinal/:id", teacherRoute.addFinalScore);
+
 module.exports = route;

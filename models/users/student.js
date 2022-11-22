@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const User = require("./shared/user");
 
 const studentSchema = new mongoose.Schema({
+  isWarn: {
+    type: Boolean,
+    default: false,
+  },
+  numberOfFalls: {
+    type: Number,
+    default: 0,
+  },
   level: {
     type: Number,
     required: true,
@@ -10,13 +18,16 @@ const studentSchema = new mongoose.Schema({
   },
   currentCourses: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      id: { type: mongoose.Schema.Types.ObjectId },
+      practicalScore: { type: Number, default: 0 },
+      finalScore: { type: Number, default: 0 },
     },
   ],
   endedCourses: [
     {
-      id: { type: mongoose.Schema.Types.ObjectId, required: true },
-      degree: Number,
+      id: { type: mongoose.Schema.Types.ObjectId },
+      practicalScore: { type: Number, default: 0 },
+      finalScore: { type: Number, default: 0 },
     },
   ],
   myHomework: [
