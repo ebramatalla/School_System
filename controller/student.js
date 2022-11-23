@@ -4,6 +4,10 @@ const { models } = require("mongoose");
 
 const enrollCourse = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     const course = await Course.findById(req.params.id);
     if (!course) {
       throw new Error("current invalid");
@@ -14,6 +18,9 @@ const enrollCourse = async (req, res) => {
     const student = req.user;
     if (!student) {
       throw new Error("Student is invalid");
+    }
+    if (student.level != course.availableFor) {
+      throw new Error("this course not available for this year");
     }
 
     const enrolled = student.currentCourses.find(

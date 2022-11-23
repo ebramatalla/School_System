@@ -46,7 +46,7 @@ const addStudent = async (req, res) => {
     await student.save();
     res.status(201).send(student);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).json({ error });
   }
 };
 module.exports = { addCourse, addTeacher, addStudent };

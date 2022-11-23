@@ -7,9 +7,7 @@ const isAuth = require("../middleware/isAuth");
 const isRole = require("../middleware/isRole");
 const { Role } = require("../models/users/shared/user");
 
-// route to add course
-// add manger
-
+// this route used by manger to add course
 route.post(
   "/addCourse",
   isAuth,
@@ -37,6 +35,9 @@ route.post(
     }),
   mangerRoute.addCourse
 );
+/**
+ * this route to add teacher
+ */
 route.post(
   "/addTeacher",
   isAuth,
@@ -57,6 +58,7 @@ route.post(
     .withMessage("specialization must be on of this specialization cs is it"),
   mangerRoute.addTeacher
 );
+// this  route to add student
 route.post(
   "/addStudent",
   isAuth,
