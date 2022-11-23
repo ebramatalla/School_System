@@ -1,6 +1,6 @@
-const Student = require("../models/users/student");
 const Course = require("../models/Courses/course");
-const { models } = require("mongoose");
+
+// edit user
 
 const enrollCourse = async (req, res) => {
   try {
@@ -44,4 +44,8 @@ const getAllHomework = async (req, res) => {
     res.status(200).send(req.user.myHomework);
   } catch (error) {}
 };
-module.exports = { enrollCourse, getAllHomework };
+
+module.exports = {
+  enrollCourse,
+  getAllHomework,
+};

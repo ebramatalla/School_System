@@ -2,10 +2,15 @@ const Teacher = require("../models/users/teacher");
 const Course = require("../models/Courses/course");
 const Student = require("../models/users/student");
 const student = require("../models/users/student");
+const Social = require("../social/social");
 
 //  add home work in course
 const addHomeWork = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     const course = await Course.findById(req.params.id);
     if (!course) {
       throw new Error("Invalid Course");
@@ -28,6 +33,12 @@ const addHomeWork = async (req, res) => {
         homework: req.body.homework,
         time: myDate,
       });
+      Social.AddPost(
+        "HomeWork Added in Course" +
+          course.name +
+          "please check Your Home Work And Last Time to Submit It " +
+          myDate
+      );
       await student.save();
     });
     res.status(200).send({ message: "Added" });

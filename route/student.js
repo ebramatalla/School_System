@@ -4,8 +4,10 @@ const studentController = require("../controller/student");
 const isAuth = require("../middleware/isAuth");
 const isRole = require("../middleware/isRole");
 const { Role } = require("../models/users/shared/user");
-const { body, param } = require("express-validator");
+const { param } = require("express-validator");
 const Courses = require("../models/Courses/course");
+
+// edit User
 
 route.post(
   "/enrollCourse/:id",
