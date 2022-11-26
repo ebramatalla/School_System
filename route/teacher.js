@@ -9,7 +9,7 @@ const Courses = require("../models/Courses/course");
 const Student = require("../models/users/student");
 
 // validate course to use it in route
-const corseValidator = [
+const courseValidator = [
   param("id")
     .isMongoId()
     .custom(async (value, { req }) => {
@@ -35,7 +35,7 @@ const studentValidator = [
 route.post(
   "/teacher/:id",
   isAuth,
-  corseValidator,
+  courseValidator,
   body("homework")
     .isString()
     .withMessage("Homework Is required and must be string"),
@@ -49,13 +49,13 @@ route.get(
   "/studentInCourse/:id",
   isAuth,
   isRole([Role.teacher]),
-  corseValidator,
+  courseValidator,
   teacherRoute.studentInCourse
 );
 // add score of student
 route.post(
   "/addScore/:id",
-  corseValidator,
+  courseValidator,
   studentValidator,
   isAuth,
   isRole([Role.teacher]),
@@ -65,11 +65,24 @@ route.post(
 // add final score
 route.post(
   "/addFinal/:id",
-  corseValidator,
-  studentValidator,
   isAuth,
   isRole([Role.teacher]),
+  courseValidator,
+  studentValidator,
+
   teacherRoute.addFinalScore
 );
 
+// put exam
+route.post(
+  "/putExam/:id",
+  isAuth,
+  isRole([Role.teacher]),
+  courseValidator,
+  body("questions")
+    .isArray({ min: 5, max: 10 })
+    .withMessage("Question must be Min 5 Question and max 15"),
+  body("duration").isNumeric().withMessage("duration must be Number"),
+  teacherRoute.addExam
+);
 module.exports = route;

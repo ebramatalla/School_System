@@ -5,7 +5,7 @@ const AddPost = async (postContent) => {
   const post = await social
     .post({
       post: postContent,
-      platforms: ["twitter"],
+      platforms: ["facebook"],
     })
     .catch(console.error);
 };

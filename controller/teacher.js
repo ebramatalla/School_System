@@ -1,8 +1,10 @@
 const Teacher = require("../models/users/teacher");
 const Course = require("../models/Courses/course");
 const Student = require("../models/users/student");
-const student = require("../models/users/student");
 const Social = require("../social/social");
+const Exam = require("../models/exam/exam");
+const { validationResult } = require("express-validator");
+const Schedule = require("../controller/schedule ");
 
 //  add home work in course
 const addHomeWork = async (req, res) => {
@@ -33,11 +35,8 @@ const addHomeWork = async (req, res) => {
         homework: req.body.homework,
         time: myDate,
       });
-      Social.AddPost(
-        "HomeWork Added in Course" +
-          course.name +
-          "please check Your Home Work And Last Time to Submit It " +
-          myDate
+      await Social.AddPost(
+        "New Home Work in course" + course.name + " " + req.body.homework
       );
       await student.save();
     });
@@ -137,9 +136,44 @@ const addFinalScore = async (req, res) => {
   }
 };
 
+// exam
+const addExam = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // Check if this teacher teach this course
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      throw new Error("Invalid Course");
+    }
+    if (req.user._id.toString() !== course.teacher.toString()) {
+      throw new Error("you don't teach this course");
+    }
+    // check if there is exam in the same time or while exam
+    const exams = await Exam.find({ startDate: { $gt: Date.now() } });
+    var start = new Date(req.body.startDate);
+    exams.forEach((exam) => {
+      if (start > exam.startDate && start < exam.endDate) {
+        throw `sorry there are exam in this time the exam start in ${exam.startDate} and end in ${exam.endDate} `;
+      }
+    });
+
+    const exam = new Exam({ ...req.body, courseId: req.params.id });
+    await exam.save();
+    Schedule.startExam(exam._id);
+    Schedule.endExam(exam._id);
+    res.status(200).send(exam);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   addHomeWork,
   studentInCourse,
   addPracticalScore,
   addFinalScore,
+  addExam,
 };

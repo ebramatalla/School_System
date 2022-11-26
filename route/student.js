@@ -7,6 +7,16 @@ const { Role } = require("../models/users/shared/user");
 const { param } = require("express-validator");
 const Courses = require("../models/Courses/course");
 
+const courseValidator = [
+  param("id")
+    .isMongoId()
+    .custom(async (value, { req }) => {
+      const course = await Courses.findById(value);
+      if (!course) {
+        throw new Error("invalid course");
+      }
+    }),
+];
 // edit User
 
 route.post(
@@ -33,5 +43,22 @@ route.get(
 );
 
 // mark home work as complete
+
+// Get Exam
+route.get(
+  "/getExam/:id",
+  isAuth,
+  isRole([Role.student]),
+  courseValidator,
+  studentController.getExam
+);
+
+// submit exam
+route.post(
+  "/submitExam/:id",
+  isAuth,
+  isRole([Role.student]),
+  studentController.submitAnswer
+);
 
 module.exports = route;

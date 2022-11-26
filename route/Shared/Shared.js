@@ -2,8 +2,10 @@ const express = require("express");
 const route = express.Router();
 const shared = require("../../controller/shared/shared");
 const { Role } = require("../../models/users/shared/user");
-const isRole = require("../middleware/isRole");
-const isAuth = require("../middleware/isAuth");
+const isRole = require("../../middleware/isRole");
+const isAuth = require("../../middleware/isAuth");
+const { body } = require("express-validator");
+
 // edit user profile
 route.patch(
   "edit",
