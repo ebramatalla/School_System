@@ -5,6 +5,7 @@ const Social = require("../social/social");
 const Exam = require("../models/exam/exam");
 const { validationResult } = require("express-validator");
 const Schedule = require("../controller/schedule ");
+const Scores = require("../models/exam/scoreExam");
 
 //  add home work in course
 const addHomeWork = async (req, res) => {
@@ -169,6 +170,33 @@ const addExam = async (req, res) => {
     res.status(400).send(error);
   }
 };
+// see grades
+const scoresOfExam = async (req, res) => {
+  try {
+    const scoreExam = await Scores.find({ examId: req.params.id })
+      .populate("student", "name -_id")
+      .select("student score");
+    res.status(200).send(scoreExam);
+  } catch (error) {}
+};
+
+// add Score to practicalScore
+const addScoreOfExam = async (req, res) => {
+  try {
+    const scores = await Scores.find().populate("examId", "courseId");
+    scores.forEach(async (score, i) => {
+      const student = await Student.findById(score.student);
+      const currentCourse = student.currentCourses.find((x) =>
+        x._id.equals(score.examId["courseId"])
+      );
+      currentCourse.practicalScore += score.score;
+      student.save();
+    });
+    res.status(200).send({
+      message: `Score added successfully to ${scores.length} Student`,
+    });
+  } catch (error) {}
+};
 
 module.exports = {
   addHomeWork,
@@ -176,4 +204,6 @@ module.exports = {
   addPracticalScore,
   addFinalScore,
   addExam,
+  scoresOfExam,
+  addScoreOfExam,
 };

@@ -85,4 +85,7 @@ route.post(
   body("duration").isNumeric().withMessage("duration must be Number"),
   teacherRoute.addExam
 );
+// see the grade of exam
+route.get("/seeGrade/:id", teacherRoute.scoresOfExam);
+route.get("/addScore/:id", teacherRoute.addScoreOfExam);
 module.exports = route;

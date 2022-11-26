@@ -4,8 +4,17 @@ const answerSchema = mongoose.Schema({
   examId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: "Exam",
   },
-  student: { type: mongoose.Schema.Types.ObjectId, required: true },
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
   answers: [
     {
       questionId: Number,
