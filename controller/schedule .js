@@ -36,7 +36,6 @@ const endAllExam = async () => {
   const exams = await Exam.find({ activeNow: true });
   exams.forEach(async (element) => {
     if (element.endDate < Date.now()) {
-      console.log("hh");
       element.activeNow = false;
       await element.save();
     }

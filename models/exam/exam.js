@@ -38,7 +38,7 @@ const examSchema = mongoose.Schema({
   },
 });
 examSchema.pre("validate", function (next) {
-  if (this.startDate < Date.now()) {
+  if (this.startDate < Date.now() && this.activeNow) {
     throw "Can not Start Exam In Past";
   }
   if (this.questions.length > 10) {
